@@ -1,0 +1,22 @@
+---
+title: "WeeklyDiscussion"
+author: "Gutenberg Tutorial"
+date: "Spring 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro
+
+Use this document to suggest discussion topics or questions for each week. Make sure to list your name after each question/topic you add (see example below). Please do not delete anyone else's contribution; you can add information or suggest edits after each question.
+
+## Week 2 (Feb 6 - Feb 12)
+
++ (Melissa Crow): What are some questions/topics you might be interested in asking?
++ (Melissa Crow): What are some units of analysis you would like to focus on (books, chapters, lines, authors, genres)? The unit of analysis is usually equivalent to the row in a spreadsheet.
+
+
+
