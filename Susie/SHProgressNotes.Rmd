@@ -1,0 +1,19 @@
+---
+title: "SH Progress Notes"
+author: "Your name(s)"
+date: "Spring 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Week 2
+
+Goals:
+Time: 
+Summary:
+
+
+Notes:
