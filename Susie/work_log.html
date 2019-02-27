@@ -126,7 +126,9 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(tidytext)</code></pre>
+<pre class="r"><code>library(stringr)
+
+library(tidytext)</code></pre>
 <pre><code>## Warning: package 'tidytext' was built under R version 3.4.4</code></pre>
 <pre class="r"><code>words &lt;- books %&gt;%
   unnest_tokens(word, text)
@@ -134,10 +136,12 @@ $(document).ready(function () {
 
 word_counts &lt;- words %&gt;%
   anti_join(stop_words, by = &quot;word&quot;) %&gt;%
-  count(title, word, sort = TRUE)
+  count(title, word, sort = TRUE)%&gt;%
+  group_by(title)
 
 word_counts</code></pre>
 <pre><code>## # A tibble: 26,793 x 3
+## # Groups:   title [5]
 ##    title                    word           n
 ##    &lt;chr&gt;                    &lt;chr&gt;      &lt;int&gt;
 ##  1 The Mysteries of Udolpho emily       2047
@@ -167,6 +171,10 @@ word_counts</code></pre>
 ## 10            9 Abraha~ Lincol~                3 en       US Civil War    
 ## # ... with 51,987 more rows, and 2 more variables: rights &lt;chr&gt;,
 ## #   has_text &lt;lgl&gt;</code></pre>
+<pre class="r"><code>horace &lt;- gutenberg_works(author == &quot;Walpole, Horace&quot;)
+
+#gutenberg_authors%&gt;%
+  #filter(author == &quot;HORACE WALPOLE&quot;)</code></pre>
 <p>Notes:</p>
 <p><strong>Gutenbergr Vinnette</strong></p>
 <p>For basics like title, author and language</p>

@@ -1,17 +1,19 @@
 ---
-title: "Gutenbergr Tutorial Notes"
+title: "Gutenbergr Work Log"
 author: "Susan Hajmohammad"
 date: "February 13, 2019"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-
 library(gutenbergr)
 library(dplyr)
 
 
-#castle_otranto <- gutenberg_download(696)
+
+
+
+castle_otranto <- gutenberg_download(696)
 
 #frankenstein <- gutenberg_download(41445)
 
@@ -19,7 +21,7 @@ library(dplyr)
 
 #old_english_baron <- gutenberg_download(5182)
 
-mysteries_udolpho <- gutenberg_download(3268)
+#mysteries_udolpho <- gutenberg_download(3268)
 
 
 books <- gutenberg_download(c(696, 41445, 6087, 5182, 3268), meta_fields = "title")
@@ -29,18 +31,41 @@ books %>%
   count(title)
 
 
-gutenberg_subjects %>%
-  filter(subject == "Gothic fiction")
+#gothic_books <- gutenberg_metadata %>%
+  #filter(gutenberg_subjects == "Gothic fiction")
 
-gutenberg_authors
+gothic_books <- gutenberg_subjects%>%
+  filter(subject == "Gothic fiction (Literary genre)")
 
+
+
+#gothic_books_1 <- gutenberg_subjects%>%
+  #filter(gutenberg_bookshelf == "Gothic fiction")
+
+
+gothic_df <- gutenberg_download(gothic_books)
+
+
+summary(gothic_df)
+
+
+#gothic_df%>% 
+  #group_by(gutenberg_bookshelf)
+
+
+#detective <- gutenberg_subjects %>%
+  #filter(subject == "Detective and mystery stories")
+
+
+
+subjects <- gutenberg_subjects
 
 
 ```
 
 
 ```{r }
-
+library(stringr)
 
 library(tidytext)
 
@@ -50,7 +75,8 @@ words <- books %>%
 
 word_counts <- words %>%
   anti_join(stop_words, by = "word") %>%
-  count(title, word, sort = TRUE)
+  count(title, word, sort = TRUE)%>%
+  group_by(title)
 
 word_counts
 
@@ -61,8 +87,16 @@ word_counts
 
 ```{r }
 
-
 gutenberg_metadata
+
+
+
+
+horace <- gutenberg_works(author == "Walpole, Horace")
+
+#gutenberg_authors%>%
+  #filter(author == "HORACE WALPOLE")
+
 
 
 ```
