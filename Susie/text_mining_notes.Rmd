@@ -5,26 +5,277 @@ date: "February 25, 2019"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(gutenbergr)
+library(tm)
+library(tidytext)
+library(stringr)
+library(tidyr)
+library(topicmodels)
+library(ggplot2)
+library(tidytext)
+
+
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+
+
+
+
+ 
+```{r, include=FALSE}
+
+##Regular expressions
+
+
+#castle_otranto <- gutenberg_download(696)
+
+#frankenstein <- gutenberg_download(41445)
+
+#the_vampyre <- gutenberg_download(6087)
+
+#old_english_baron <- gutenberg_download(5182)
+
+#mysteries_udolpho <- gutenberg_download(3268)
+
+
+# books <- gutenberg_download(c(696, 41445, 6087, 5182, 3268), meta_fields = "title")
+# 
+# 
+# books %>% 
+#   count(title)
+
+
+#gothic_books <- gutenberg_metadata %>%
+  #filter(gutenberg_subjects == "Gothic fiction")
+
+
+```
+ 
+ 
+ 
+ 
+ 
+ 
+```{r, include=FALSE}
+
+
+
+
+
+gothic_books <- gutenberg_subjects%>%
+  filter(subject == "Gothic fiction (Literary genre)")
+
+
+# gb <- gutenberg_metadata %>%
+#   gutenberg_subjects(subject == "Gothic fiction (Literary genre)")%>%
+#   gutenberg_download(meta_fields = "author")
+
+gf <- gutenberg_metadata%>%
+  filter(gutenberg_bookshelf == "Gothic Fiction")
+
+
+gb <- gutenberg_metadata
+
+
+goth <- str_detect(gb, "gothic")
+
+
+
+
+
+# authors <- gutenberg_metadata %>%
+#   count(author, sort = TRUE, meta_fields )
+#   
+# 
+# 
+# gothic_authors <- authors %>%
+#   filter(gutenberg_bookshelf == "Gothic fiction",
+#          language == "en",
+#          !str_detect(title, "Works"),
+#          has_text,
+#          !str_detect(rights, "Copyright")) %>%
+#          distinct(title)
+
+
+
+
+#gothic_books_1 <- gutenberg_subjects%>%
+  #filter(gutenberg_bookshelf == "Gothic fiction")
+
+
+gothic_df <- gutenberg_download(gothic_books)
+
+
+# gothic_df <- gutenberg_metadata%>%
+#   gutenberg_download(meta_fields = "author")
+#   gutenberg_download(gothic_books)
+
+summary(gothic_df)
+
+
+#gothic_df%>% 
+  #group_by(gutenberg_bookshelf)
+
+
+#detective <- gutenberg_subjects %>%
+  #filter(subject == "Detective and mystery stories")
+
+
+
+subjects <- gutenberg_subjects
+
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+```{r }
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+
+# words <- books %>%
+#   unnest_tokens(word, text)
+# 
+# 
+# word_counts <- words %>%
+#   anti_join(stop_words, by = "word") %>%
+#   count(title, word, sort = TRUE)%>%
+#   group_by(title)
+# 
+# word_counts
+
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r }
+
+gutenberg_metadata
+
+
+
+
+horace <- gutenberg_works(author == "Walpole, Horace")
+
+#gutenberg_authors%>%
+  #filter(author == "HORACE WALPOLE")
+
+
+
+```
+
+
+
+Notes: 
+  
+  **Gutenbergr Vinnette** 
+   
+  For basics like title, author and language
+    
+  Use "gutenberg_metadata"
+      
+  ex: library(dplyr)
+
+  gutenberg_metadata %>%
+      filter(title == "Wuthering Heights")
+    
+  gutenberg_works(author == "Austen, Jane")
+    
+  "pre-filters" the data set 
+      
+      
+*Another way to filter*      
+      library(stringr)
+gutenberg_works(str_detect(author, "Austen"))
+
+
+*To download a book using the ID you can use*
+
+  wuthering_heights <- gutenberg_download(768)
+  wuthering_heights
+
+
+You can find book IDs on ???
+
+
+*How to filter by subjects*
+
+gutenberg_subjects %>%
+  filter(subject == "Detective and mystery stories")
+
+  
+*To find info on the authors* 
+
+gutenberg_authors()
+
+
+
+  
+  **Units of Analysis**
+  
+ *This is to make a dataframe of all the words*
+ 
+  library(tidytext)
+
+words <- books %>%
+  unnest_tokens(word, text)
+
+words
+
+
+*This counts the amount of times each word is used*
+
+word_counts <- words %>%
+  anti_join(stop_words, by = "word") %>%
+  count(title, word, sort = TRUE)
+
+word_counts
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+Works Cited:
+
+Gutenbergr<https://cran.r-project.org/web/packages/gutenbergr/index.html>
+Gutenbergr <https://cran.r-project.org/web/packages/gutenbergr/vignettes/intro.html>
+tm:Text Mining Package<https://cran.r-project.org/web/packages/tm/index.html>
+tm <https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf>
+Gutenber.org <https://www.gutenberg.org/ebooks/subject/2586?start_index=51>
+Info on gothic lit via WIKI <https://en.wikipedia.org/wiki/Gothic_fiction#Early_Gothic_romances>
+Gutenbergr <https://cran.r-project.org/web/packages/gutenbergr/README.html>
+String functions <https://rdrr.io/r/>
+Gutenbergr <https://ropensci.org/tutorials/gutenbergr_tutorial/>
+Gutenbergr pdf <https://cran.r-project.org/web/packages/gutenbergr/gutenbergr.pdf>
+Text mining with Tidy Verse <https://books.google.com/books?hl=en&lr=&id=qNcnDwAAQBAJ&oi=fnd&pg=PP1&dq=gutenbergr+text+mining&ots=Q0zQ8pMXu2&sig=8Kd4-5TuF2JY6S3Gf8KhfhcSsIw#v=onepage&q=gutenbergr%20text%20mining&f=false>
+Text mining pdf <http://epub.wu.ac.at/3978/1/textmining.pdf>
+<https://cran.r-project.org/web/packages/tidytext/vignettes/topic_modeling.html>
+<>
+<>
+<>
+<>
+<>
+<>
+
+
+
+
+
+

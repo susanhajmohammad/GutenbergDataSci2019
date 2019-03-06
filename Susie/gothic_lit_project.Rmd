@@ -1,0 +1,104 @@
+---
+title: "Gothic Literature Analysis in R"
+author: "Susan Hajmohammad"
+date: "February 13, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(dplyr)
+library(gutenbergr)
+library(tm)
+library(tidytext)
+library(stringr)
+library(tidyr)
+library(topicmodels)
+library(ggplot2)
+library(tidytext)
+
+```
+ 
+ Getting the gutenberg metadata to just be 
+ 
+```{r}
+
+
+# gb <- gutenberg_metadata
+# 
+# 
+# goth <- gb %>%
+#   group_by(gutenberg_bookshelf)%>%
+#   mutate(subject = cumsum(str_detect(text, regex("^gothic", ignore_case = TRUE)))) %>%
+#   ungroup()%>%
+#   filter(subject > 0)
+
+
+gb <- gutenberg_metadata
+
+
+# gb_1 <- grep("Gothic", gb)
+# 
+# 
+# gb[gb_1]
+
+
+
+# pattern <- "(..)\\1"
+# gb$gutenberg_bookshelf %>% 
+#   str_subset(pattern)
+# 
+# str_extract_all(gb, "^gothic..")[[1]]
+# 
+# 
+# 
+# str_extract_all(gb, regex("^gothic..", multiline = TRUE))[[1]]
+
+
+
+goth_books <- gb %>%
+ select(gutenberg_id, title, author, gutenberg_author_id, language, gutenberg_bookshelf, rights, has_text) %>%   
+ filter(str_detect(str_to_lower(gutenberg_bookshelf), "gothic"))
+
+
+
+goth_en <- goth_books %>%
+  filter(language == "en")
+
+
+goth_en %>%
+  count(author)
+
+
+
+
+
+
+
+```
+ 
+ separating the big text data frame by title and chapter. 
+ 
+```{r}
+
+
+goth_texts <- gutenberg_download(goth_en, meta_fields = "title")
+
+
+goth_by_chapter <- goth_texts %>%
+  group_by(title) %>%
+  mutate(chapter = cumsum(str_detect(text, regex("^chapter ", ignore_case = TRUE)))) %>%
+  ungroup() %>%
+  filter(chapter > 0)
+
+
+
+
+
+```
+ 
+ 
+ 
+ 
+
+
