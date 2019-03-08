@@ -1,0 +1,10 @@
+https://cran.r-project.org/web/packages/stringr/index.html
+
+
+https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html
+
+
+
+https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html
+
+https://blog.exploratory.io/filter-with-text-data-952df792c2ba?gi=2383827a8083

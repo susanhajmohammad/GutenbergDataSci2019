@@ -16,6 +16,22 @@ library(tidyr)
 library(topicmodels)
 library(ggplot2)
 library(tidytext)
+library(openNLP)
+
+library(openNLPmodels.en)
+
+
+library(XML)
+library(tm)
+library(tm.plugin.webmining)
+#library(tm.plugin.sentiment)
+library(NLP)
+library(openNLP)
+stock <-"JPM"
+# corpus <- WebCorpus(GoogleFinanceSource(stock))
+# sentences <- sentDetect(corpus)
+
+
 
 ```
  
@@ -70,9 +86,12 @@ goth_en %>%
   count(author)
 
 
+goth_en %>% 
+  group_by(author)%>%
+  summarize(Num = n())
 
 
-
+melm <- gutenberg_download(53685)
 
 
 ```
@@ -92,13 +111,125 @@ goth_by_chapter <- goth_texts %>%
   filter(chapter > 0)
 
 
+```
+ 
+ 
+ 
+ 
+```{r}
+library(quanteda)
+require(quanteda)
+library(readtext)
+require(readtext)
+
+got <- goth_by_chapter %>%
+  group_by(title, chapter) %>%
+  count(".")
+
+# print.sentiment <- function(x, ...){ 
+#    for(i in NROW(x)){ 
+#       cat(paste(x[i,]), "\n") 
+#       print(x[i,]) 
+#    } 
+# } 
+
+a_book <- gutenberg_download(42)
+
+a_book %>%
+  count(".")
 
 
+words <- str_split(a_book, " ")
+lapply(words, length)
+word_lengths <- lapply(words, str_length)
+lapply(word_lengths, mean)
+
+
+
+
+
+# dat <- Reduce(data.frame,
+#               c("AC", "AD", "AE", "AF", "AG"))
+# names(dat) <- paste0("V", 1:ncol(dat))
+
+
+
+# a_book <- str(a_book)
+# 
+# 
+# str_rev <- function(string)
+#     paste(rev(unlist(strsplit(string, ""))), collapse = "")
+# 
+# str_rev <- Vectorize(str_rev, USE.NAMES = FALSE)
+# 
+# 
+# rbind(a_book,
+#       t(apply(a_book, 1, str_rev))
+#       )
+
+# tmp <- sapply(a_book, as.character) # a character vector
+# 
+# matrix(c(tmp, sapply(a_book, sub, pattern = "(.)(.)", replacement = "\\2\\1")), 
+#        2, byrow = TRUE)
+
+
+# a_book <- got %>% 
+#   filter(gutenberg_id == "84")
+
+# corp_immig <- corpus(got)
+# toks_immig <- tokens(corp_immig)
+
+#corp_tm <- tm::VCorpus(tm::VectorSource(got))
+#corp_quanteda <- corpus(corp_tm)
+
+
+
+
+#nsentence(toks_immig)
+
+ 
+# x <- sentDetect(got, language = "en")
+# x
+# 
+# 
+# length(x)
+```
+ 
+ 
+ 
+ 
+ 
+ 
+```{r}
+
+goth_by_chapter_word <- goth_by_chapter %>%
+  unite(title_chapter, title, chapter) %>%
+  unnest_tokens(word, text)
+
+word_counts <- goth_by_chapter_word %>%
+  anti_join(stop_words) %>%
+  count(title_chapter, word, sort = TRUE)
+
+word_counts
 
 ```
  
  
  
+```{r}
+
+
+chapters_dtm <- word_counts %>%
+  cast_dtm(title_chapter, word, n)
+
+chapters_dtm
+
+
+
+
+
+
+```
  
 
 
