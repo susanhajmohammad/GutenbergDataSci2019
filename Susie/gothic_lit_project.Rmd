@@ -140,11 +140,12 @@ a_book %>%
 
 
 words <- str_split(a_book, " ")
-lapply(words, length)
+words_ <- lapply(words, length)  #this is number of word in a chapter. 
 word_lengths <- lapply(words, str_length)
 lapply(word_lengths, mean)
 
 
+###write_csv
 
 
 
@@ -210,26 +211,15 @@ word_counts <- goth_by_chapter_word %>%
   anti_join(stop_words) %>%
   count(title_chapter, word, sort = TRUE)
 
+
+#add in arrange by capter title. 
+
 word_counts
 
 ```
  
  
- 
-```{r}
 
-
-chapters_dtm <- word_counts %>%
-  cast_dtm(title_chapter, word, n)
-
-chapters_dtm
-
-
-
-
-
-
-```
  
 
 

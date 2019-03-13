@@ -267,12 +267,45 @@ Gutenbergr pdf <https://cran.r-project.org/web/packages/gutenbergr/gutenbergr.pd
 Text mining with Tidy Verse <https://books.google.com/books?hl=en&lr=&id=qNcnDwAAQBAJ&oi=fnd&pg=PP1&dq=gutenbergr+text+mining&ots=Q0zQ8pMXu2&sig=8Kd4-5TuF2JY6S3Gf8KhfhcSsIw#v=onepage&q=gutenbergr%20text%20mining&f=false>
 Text mining pdf <http://epub.wu.ac.at/3978/1/textmining.pdf>
 <https://cran.r-project.org/web/packages/tidytext/vignettes/topic_modeling.html>
+<https://www.tidytextmining.com/topicmodeling.html>
+<https://stackoverflow.com/questions/12602652/how-to-count-the-number-of-sentences-in-a-text-in-r>
+<http://r.789695.n4.nabble.com/openNLP-package-error-td3069792.html>
+<http://datacube.wu.ac.at/>
+<http://r.789695.n4.nabble.com/help-in-sentDetect-fuction-td4633462.html>
+<https://sourceforge.net/p/opennlp/discussion/9944/thread/421215be/>
+<https://stackoverflow.com/questions/49250183/tm-plugin-sentiment-package-is-not-available-for-r-version-3-4-3>
+<https://stackoverflow.com/questions/45922418/error-in-install-packages-cannot-remove-prior-installation-of-package-dbi?rq=1>
+<https://rdrr.io/cran/quanteda/man/nsentence.html>
+<https://tutorials.quanteda.io/basic-operations/corpus/corpus/>
+<http://www.katrinerk.com/courses/words-in-a-haystack-an-introductory-statistics-course/schedule-words-in-a-haystack/r-code-the-text-mining-package>
+<https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html>
+<https://github.com/ropensci/tokenizers/blob/master/vignettes/introduction-to-tokenizers.Rmd>
+<https://campus.datacamp.com/courses/string-manipulation-in-r-with-stringr/introduction-to-stringr?ex=14>
 <>
 <>
 <>
 <>
 <>
 <>
+<>
+<>
+<>
+<>
+<>
+<>
+<>
+<>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
