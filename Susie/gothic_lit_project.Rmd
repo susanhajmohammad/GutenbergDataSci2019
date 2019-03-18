@@ -28,6 +28,10 @@ library(tm.plugin.webmining)
 library(NLP)
 library(openNLP)
 stock <-"JPM"
+library(quanteda)
+
+library(readtext)
+
 # corpus <- WebCorpus(GoogleFinanceSource(stock))
 # sentences <- sentDetect(corpus)
 
@@ -35,40 +39,15 @@ stock <-"JPM"
 
 ```
  
- Getting the gutenberg metadata to just be 
+
+### Downloading what Gothic books we have access to from the meta data
+ 
  
 ```{r}
 
 
-# gb <- gutenberg_metadata
-# 
-# 
-# goth <- gb %>%
-#   group_by(gutenberg_bookshelf)%>%
-#   mutate(subject = cumsum(str_detect(text, regex("^gothic", ignore_case = TRUE)))) %>%
-#   ungroup()%>%
-#   filter(subject > 0)
-
-
 gb <- gutenberg_metadata
 
-
-# gb_1 <- grep("Gothic", gb)
-# 
-# 
-# gb[gb_1]
-
-
-
-# pattern <- "(..)\\1"
-# gb$gutenberg_bookshelf %>% 
-#   str_subset(pattern)
-# 
-# str_extract_all(gb, "^gothic..")[[1]]
-# 
-# 
-# 
-# str_extract_all(gb, regex("^gothic..", multiline = TRUE))[[1]]
 
 
 
@@ -82,6 +61,16 @@ goth_en <- goth_books %>%
   filter(language == "en")
 
 
+```
+ 
+ 
+### A count for how many of the Gothic books in our dataframe each other has written. 
+ 
+ 
+```{r}
+
+## both these codes do the same thing 
+
 goth_en %>%
   count(author)
 
@@ -91,12 +80,12 @@ goth_en %>%
   summarize(Num = n())
 
 
-melm <- gutenberg_download(53685)
+
 
 
 ```
  
- separating the big text data frame by title and chapter. 
+### Downloading the texts from our previous dataframe and adding a column for Title and Chapter.   
  
 ```{r}
 
@@ -114,90 +103,61 @@ goth_by_chapter <- goth_texts %>%
 ```
  
  
- 
+### Counting the amount of sentences by counting the number of "."s 
  
 ```{r}
-library(quanteda)
-require(quanteda)
-library(readtext)
-require(readtext)
+
+
 
 got <- goth_by_chapter %>%
   group_by(title, chapter) %>%
   count(".")
 
-# print.sentiment <- function(x, ...){ 
-#    for(i in NROW(x)){ 
-#       cat(paste(x[i,]), "\n") 
-#       print(x[i,]) 
-#    } 
-# } 
-
-a_book <- gutenberg_download(42)
+a_book <- gutenberg_download(42, meta_fields = "title")
 
 a_book %>%
   count(".")
 
+```
+ 
+ 
+ 
+### FInding average word length  
+ 
+ 
+```{r}
+
+
+
 
 words <- str_split(a_book, " ")
-words_ <- lapply(words, length)  #this is number of word in a chapter. 
+words_ <- lapply(words, length)  #this is number of words in a chapter. 
 word_lengths <- lapply(words, str_length)
 lapply(word_lengths, mean)
+
+##creates a list, make so that it works for a data frame
+
+
 
 
 ###write_csv
 
 
 
-# dat <- Reduce(data.frame,
-#               c("AC", "AD", "AE", "AF", "AG"))
-# names(dat) <- paste0("V", 1:ncol(dat))
 
-
-
-# a_book <- str(a_book)
-# 
-# 
-# str_rev <- function(string)
-#     paste(rev(unlist(strsplit(string, ""))), collapse = "")
-# 
-# str_rev <- Vectorize(str_rev, USE.NAMES = FALSE)
-# 
-# 
-# rbind(a_book,
-#       t(apply(a_book, 1, str_rev))
-#       )
-
-# tmp <- sapply(a_book, as.character) # a character vector
-# 
-# matrix(c(tmp, sapply(a_book, sub, pattern = "(.)(.)", replacement = "\\2\\1")), 
-#        2, byrow = TRUE)
-
-
-# a_book <- got %>% 
-#   filter(gutenberg_id == "84")
-
-# corp_immig <- corpus(got)
-# toks_immig <- tokens(corp_immig)
-
-#corp_tm <- tm::VCorpus(tm::VectorSource(got))
-#corp_quanteda <- corpus(corp_tm)
-
-
-
-
-#nsentence(toks_immig)
-
- 
-# x <- sentDetect(got, language = "en")
-# x
-# 
-# 
-# length(x)
 ```
  
  
- 
+### Counting words per chapter or words per line
+
+```{r}
+words <- str_split(a_book, " ")
+words_ <- lapply(words, length)
+
+
+
+```
+
  
  
  

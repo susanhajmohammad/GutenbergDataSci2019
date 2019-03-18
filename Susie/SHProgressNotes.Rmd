@@ -9,11 +9,38 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Week 2
+# Week 6
 
 Goals:
+
+  long term:
+  
+  - Find the names mentioned close to each other in each novel
+  - Find the adjectives closest to certain character names
+  - THis would include looking for how to code to select the nearest 5 words around a character's name for example.  
+  - FIrst figure out how to split the book into lines 
+  - also look into pronouns because the character's name isn't always mentioned in the text.  This could show us a difference in mood when referring to women vs. men (she/her vs he/him).  
+  
+  SHort term: 
+  - update the metadata
+     do this by manually putting in the missing gothic books into a csv an rbind it to the df I have already made.  
+  - the data frame should include all the info but ultimately be split up by chapter per row.  
+  
+  
 Time: 
+
+
+
 Summary:
 
 
+
+
 Notes:
+
+
+
+
+
+
+

@@ -17,50 +17,78 @@ library(tidyr)
 library(topicmodels)
 library(ggplot2)
 library(tidytext)
+library(openNLP)
+
+library(openNLPmodels.en)
+
+
+library(XML)
+library(tm)
+library(tm.plugin.webmining)
+#library(tm.plugin.sentiment)
+library(NLP)
+library(openNLP)
+stock <-"JPM"
+library(quanteda)
+
+library(readtext)
+
+# corpus <- WebCorpus(GoogleFinanceSource(stock))
+# sentences <- sentDetect(corpus)
+
 
 
 ```
 
-
-
-
-
-
+How to download books by gutenberd_id:
+Putting downloaded books into a dataframe:
+Filtering the metadata for "Gothic fiction":
 
 
  
 ```{r, include=FALSE}
 
-##Regular expressions
+#Regular expressions
 
 
-#castle_otranto <- gutenberg_download(696)
+castle_otranto <- gutenberg_download(696)
 
-#frankenstein <- gutenberg_download(41445)
+frankenstein <- gutenberg_download(41445)
 
-#the_vampyre <- gutenberg_download(6087)
+the_vampyre <- gutenberg_download(6087)
 
-#old_english_baron <- gutenberg_download(5182)
+old_english_baron <- gutenberg_download(5182)
 
-#mysteries_udolpho <- gutenberg_download(3268)
-
-
-# books <- gutenberg_download(c(696, 41445, 6087, 5182, 3268), meta_fields = "title")
-# 
-# 
-# books %>% 
-#   count(title)
+mysteries_udolpho <- gutenberg_download(3268)
 
 
-#gothic_books <- gutenberg_metadata %>%
-  #filter(gutenberg_subjects == "Gothic fiction")
+ books <- gutenberg_download(c(696, 41445, 6087, 5182, 3268), meta_fields = "title")
+ 
+ 
+ books %>% 
+   count(title)
+
+```
+ 
+ 
+This chunk of code didn't work because the subjects in the gb are labeled under gutenberg_bookshelf.
+
+
+ 
+```{r, include=FALSE}
+
+gothic_books <- gutenberg_metadata %>%
+  filter(gutenberg_bookshelf == "Gothic fiction")
 
 
 ```
  
  
  
- 
+Using the str_detect function to detect which books are labeled as "gothic"
+THis way we aren't missing any books that may be gothic but aren't labeled exactly so.  
+Here I found out that the metadata is missing about 26 books that are currently on <gutenberg.org>
+
  
  
 ```{r, include=FALSE}
@@ -73,9 +101,9 @@ gothic_books <- gutenberg_subjects%>%
   filter(subject == "Gothic fiction (Literary genre)")
 
 
-# gb <- gutenberg_metadata %>%
-#   gutenberg_subjects(subject == "Gothic fiction (Literary genre)")%>%
-#   gutenberg_download(meta_fields = "author")
+ gb <- gutenberg_metadata %>%
+   gutenberg_subjects(subject == "Gothic fiction (Literary genre)")%>%
+   gutenberg_download(meta_fields = "author")
 
 gf <- gutenberg_metadata%>%
   filter(gutenberg_bookshelf == "Gothic Fiction")
@@ -88,44 +116,77 @@ goth <- str_detect(gb, "gothic")
 
 
 
+```
+ 
+
+Accessing info on the authors, the second code chunk doesn't run because the authors dataframe is not like for the books where it has a bunch of info on the books, the data frame I created but pulls out the author's name and counts how many books they have, this could be uselful when looking at a particular author.  
+ 
+The "ga" gutenberg_authors metadata actually includes things like auhtor's name, birth date and death date, and wiki website for the author.  
 
 
-# authors <- gutenberg_metadata %>%
-#   count(author, sort = TRUE, meta_fields )
-#   
-# 
-# 
-# gothic_authors <- authors %>%
-#   filter(gutenberg_bookshelf == "Gothic fiction",
-#          language == "en",
-#          !str_detect(title, "Works"),
-#          has_text,
-#          !str_detect(rights, "Copyright")) %>%
-#          distinct(title)
+ 
+```{r, include=FALSE}
 
 
+ authors <- gutenberg_metadata %>%
+   count(author, sort = TRUE)
+   
+ 
+ga <- gutenberg_authors
+ 
+ # gothic_authors <- authors %>%
+ #   filter(gutenberg_bookshelf == "Gothic fiction",
+ #          language == "en",
+ #          !str_detect(title, "Works"),
+ #          has_text,
+ #          !str_detect(rights, "Copyright")) %>%
+ #          distinct(title)
+ 
+ 
+ 
+```
+ 
+ 
+ 
+Exploring gutenberg_subjects.  The gutenberg_subjects dataframe actually has info on all of the books and what subjects are tied to them.  For example there are many rows to each book (identified by its gutenberg_id) and in each row a subject is listed.  this is particularly useful when looking at what subjects are usually tied in with gothic fiction.  Also if I was just looking into one book I could filter out its ID and look at all of the subjects that are relevant to it.  
 
+Therefore the first code chunk didn't work because there is no "gutenberg_bookshelf" in the gs metadata.  If I wanted to filter for "gothic" in the gs I would have to use a str_detect() function, but I have already done this to the metadata.  
+ 
+ 
+in the third chunk I tried to "gutenberg download" another dataframe
+ 
+```{r, include=FALSE}
+ 
+# gothic_books_1 <- gutenberg_subjects%>%
+#    filter(gutenberg_bookshelf == "Gothic fiction")
 
-#gothic_books_1 <- gutenberg_subjects%>%
-  #filter(gutenberg_bookshelf == "Gothic fiction")
+gs <- gutenberg_subjects
 
-
-gothic_df <- gutenberg_download(gothic_books)
+#gothic_df <- gutenberg_download(gothic_books)
 
 
 # gothic_df <- gutenberg_metadata%>%
-#   gutenberg_download(meta_fields = "author")
-#   gutenberg_download(gothic_books)
+#    gutenberg_download(meta_fields = "author")
+#    gutenberg_download(gothic_books)
 
-summary(gothic_df)
-
-
-#gothic_df%>% 
-  #group_by(gutenberg_bookshelf)
+#summary(gothic_df)
 
 
-#detective <- gutenberg_subjects %>%
-  #filter(subject == "Detective and mystery stories")
+# gothic_df%>% 
+#   group_by(gutenberg_bookshelf)
+
+
+```
+ 
+ 
+ 
+This is an example showing how to filter the gutenberg_subjects metadata
+ 
+ 
+```{r, include=FALSE}
+
+detective <- gutenberg_subjects %>%
+  filter(subject == "Detective and mystery stories")
 
 
 
@@ -135,25 +196,29 @@ subjects <- gutenberg_subjects
 ```
 
 
+this chunk shows how to count the number of times each word is used  In this case I am looking at the books data frame. 
+
+
 ```{r }
 
 
 
-# words <- books %>%
-#   unnest_tokens(word, text)
-# 
-# 
-# word_counts <- words %>%
-#   anti_join(stop_words, by = "word") %>%
-#   count(title, word, sort = TRUE)%>%
-#   group_by(title)
-# 
-# word_counts
+ words <- books %>%
+   unnest_tokens(word, text)
+ 
+ 
+ word_counts <- words %>%
+   anti_join(stop_words, by = "word") %>%
+   count(title, word, sort = TRUE)%>%
+   group_by(title)
+ 
+ word_counts
 
 
 ```
 
 
+This is an example of filtering by author.  In this case all of the books that Horace Walpole has written with be saved in the "horace" df.  
 
 ```{r }
 
@@ -164,8 +229,8 @@ gutenberg_metadata
 
 horace <- gutenberg_works(author == "Walpole, Horace")
 
-#gutenberg_authors%>%
-  #filter(author == "HORACE WALPOLE")
+gutenberg_authors%>%
+  filter(author == "HORACE WALPOLE")
 
 
 
@@ -239,14 +304,183 @@ word_counts <- words %>%
 word_counts
 
 
-
+This is some trouble shoting on filtering the meta data to be just rows that contain the word "gothic" in the gutenberg_bookshelf column.  
 
     
+```{r}
+# gb <- gutenberg_metadata
+# 
+# 
+# goth <- gb %>%
+#   group_by(gutenberg_bookshelf)%>%
+#   mutate(subject = cumsum(str_detect(text, regex("^gothic", ignore_case = TRUE)))) %>%
+#   ungroup()%>%
+#   filter(subject > 0)
+
+
+gb <- gutenberg_metadata
+
+
+# gb_1 <- grep("Gothic", gb)
+# 
+# 
+# gb[gb_1]
+
+
+
+# pattern <- "(..)\\1"
+# gb$gutenberg_bookshelf %>% 
+#   str_subset(pattern)
+# 
+# str_extract_all(gb, "^gothic..")[[1]]
+# 
+# 
+# 
+# str_extract_all(gb, regex("^gothic..", multiline = TRUE))[[1]]
+```
+
+The easiest and most efficient way I found to do this was:
+
+The first line is actually downloading the metadata and saving it as "gb"
+
+next I am filtering the metadata
+
+This includes selecting which columns I would like to keep in the final df, which is all of them, then using str_detect() to find the term "gothic" in the gutenberg_bookshelf column,  I also used the str_to_lower() function that way it wouldn't matter if the characters where capitalized or not.  
+
+Lastly I filtered for books that were only in english.  
+
+```{r}
+
+
+gb <- gutenberg_metadata
+
+
+
+
+goth_books <- gb %>%
+ select(gutenberg_id, title, author, gutenberg_author_id, language, gutenberg_bookshelf, rights, has_text) %>%   
+ filter(str_detect(str_to_lower(gutenberg_bookshelf), "gothic"))
+
+
+
+goth_en <- goth_books %>%
+  filter(language == "en")
 
 
 
 
 
+```
+
+ 
+This is to count how many books each author has written in our df.  
+ 
+```{r}
+
+## both these codes do the same thing 
+
+goth_en %>%
+  count(author)
+
+
+goth_en %>% 
+  group_by(author)%>%
+  summarize(Num = n())
+
+
+
+
+
+```
+
+
+The first chunk is to download the texts from our df and the second chunk adds the columns chapter and title so we know which line is from what book and where in that book.  
+
+
+```{r}
+
+
+goth_texts <- gutenberg_download(goth_en, meta_fields = "title")
+
+
+goth_by_chapter <- goth_texts %>%
+  group_by(title) %>%
+  mutate(chapter = cumsum(str_detect(text, regex("^chapter ", ignore_case = TRUE)))) %>%
+  ungroup() %>%
+  filter(chapter > 0)
+
+
+```
+
+
+how to count the number of sentences by counting punctuation:
+
+```{r}
+
+
+
+got <- goth_by_chapter %>%
+  group_by(title, chapter) %>%
+  count(".")
+
+a_book <- gutenberg_download(42, meta_fields = "title")
+
+a_book %>%
+  count(".")
+
+```
+
+Notes on how to use the stringr package:
+
+```{r}
+
+
+# dat <- Reduce(data.frame,
+#               c("AC", "AD", "AE", "AF", "AG"))
+# names(dat) <- paste0("V", 1:ncol(dat))
+
+
+
+# a_book <- str(a_book)
+# 
+# 
+# str_rev <- function(string)
+#     paste(rev(unlist(strsplit(string, ""))), collapse = "")
+# 
+# str_rev <- Vectorize(str_rev, USE.NAMES = FALSE)
+# 
+# 
+# rbind(a_book,
+#       t(apply(a_book, 1, str_rev))
+#       )
+
+# tmp <- sapply(a_book, as.character) # a character vector
+# 
+# matrix(c(tmp, sapply(a_book, sub, pattern = "(.)(.)", replacement = "\\2\\1")), 
+#        2, byrow = TRUE)
+
+
+# a_book <- got %>% 
+#   filter(gutenberg_id == "84")
+
+# corp_immig <- corpus(got)
+# toks_immig <- tokens(corp_immig)
+
+#corp_tm <- tm::VCorpus(tm::VectorSource(got))
+#corp_quanteda <- corpus(corp_tm)
+
+
+
+
+#nsentence(toks_immig)
+
+ 
+# x <- sentDetect(got, language = "en")
+# x
+# 
+# 
+# length(x)
+```
 
 
 
@@ -259,12 +493,12 @@ Gutenbergr <https://cran.r-project.org/web/packages/gutenbergr/vignettes/intro.h
 tm:Text Mining Package<https://cran.r-project.org/web/packages/tm/index.html>
 tm <https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf>
 Gutenber.org <https://www.gutenberg.org/ebooks/subject/2586?start_index=51>
-Info on gothic lit via WIKI <https://en.wikipedia.org/wiki/Gothic_fiction#Early_Gothic_romances>
+Info on gothic lit via WIKI <https://en.wikipedia.org/wiki/Gothic_fictionEarly_Gothic_romances>
 Gutenbergr <https://cran.r-project.org/web/packages/gutenbergr/README.html>
 String functions <https://rdrr.io/r/>
 Gutenbergr <https://ropensci.org/tutorials/gutenbergr_tutorial/>
 Gutenbergr pdf <https://cran.r-project.org/web/packages/gutenbergr/gutenbergr.pdf>
-Text mining with Tidy Verse <https://books.google.com/books?hl=en&lr=&id=qNcnDwAAQBAJ&oi=fnd&pg=PP1&dq=gutenbergr+text+mining&ots=Q0zQ8pMXu2&sig=8Kd4-5TuF2JY6S3Gf8KhfhcSsIw#v=onepage&q=gutenbergr%20text%20mining&f=false>
+Text mining with Tidy Verse <https://books.google.com/books?hl=en&lr=&id=qNcnDwAAQBAJ&oi=fnd&pg=PP1&dq=gutenbergr+text+mining&ots=Q0zQ8pMXu2&sig=8Kd4-5TuF2JY6S3Gf8KhfhcSsIwv=onepage&q=gutenbergr%20text%20mining&f=false>
 Text mining pdf <http://epub.wu.ac.at/3978/1/textmining.pdf>
 <https://cran.r-project.org/web/packages/tidytext/vignettes/topic_modeling.html>
 <https://www.tidytextmining.com/topicmodeling.html>
