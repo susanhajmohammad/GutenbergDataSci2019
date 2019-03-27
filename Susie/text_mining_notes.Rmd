@@ -482,7 +482,38 @@ Notes on how to use the stringr package:
 # length(x)
 ```
 
+Turning the data into a corpus. (this is a volatile corpus)
 
+```{r}
+
+library(tm)
+
+goth_text <- goth_texts$text
+
+
+# goth_source <- VectorSource(goth_text)
+# 
+# goth_corpus <- VCorpus(goth_source)
+# 
+# goth_corpus
+# 
+# content(goth_corpus[1])
+
+
+library(seqinr)
+library(shiny)
+#read.fasta(NULL, as.string = TRUE)
+
+linn <-readLines(a_book)
+if (is.null(inFile))
+    return(NULL)
+for (i in 1:length(linn)){
+   print(linn[i])
+  
+}
+close(a_book)
+
+```
 
 
 
