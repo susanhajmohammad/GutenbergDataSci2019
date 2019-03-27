@@ -18,16 +18,16 @@ library(ggplot2)
 library(tidytext)
 library(openNLP)
 
-library(openNLPmodels.en)
-
-
-library(XML)
-library(tm)
-library(tm.plugin.webmining)
-#library(tm.plugin.sentiment)
-library(NLP)
-library(openNLP)
-stock <-"JPM"
+# library(openNLPmodels.en)
+# 
+# 
+# library(XML)
+# 
+# library(tm.plugin.webmining)
+# #library(tm.plugin.sentiment)
+# library(NLP)
+# library(openNLP)
+# stock <-"JPM"
 library(quanteda)
 
 library(readtext)
@@ -179,7 +179,39 @@ word_counts
 ```
  
  
+Turning the data into a corpus. (this is a volatile corpus)
 
+```{r}
+
+library(tm)
+
+goth_text <- goth_texts$text
+
+
+# goth_source <- VectorSource(goth_text)
+# 
+# goth_corpus <- VCorpus(goth_source)
+# 
+# goth_corpus
+# 
+# content(goth_corpus[1])
+
+
+library(seqinr)
+library(shiny)
+#read.fasta(NULL, as.string = TRUE)
+
+linn <-readLines(a_book)
+if (is.null(inFile))
+    return(NULL)
+for (i in 1:length(linn)){
+   print(linn[i])
+  
+}
+close(a_book)
+
+```
  
 
 
+Error in readLines(a_book) : 'con' is not a connection

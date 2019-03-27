@@ -249,9 +249,30 @@ Words are just attributes of the text.
 
 
 
+## How to split a text into sentences using strsplit function:
+
+```{r}
 
 
 
+unlist(strsplit(string, "(?<=\\.)\\s(?=[A-Z])", perl = T))
+
+
+
+```
+
+
+
+
+## How to split a text into sentences using tokenize_sentences() function:
+
+```{r}
+
+library(tokenizers)
+tokenize_sentences(x)
+
+
+```
 
 
 
