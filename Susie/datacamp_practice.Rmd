@@ -1,0 +1,195 @@
+---
+title: "datacamp practice on books"
+author: "Susan Hajmohammad"
+date: "April 4, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+library(gutenbergr)
+library(stringr)
+
+```
+
+```{r}
+
+north_abby <- gutenberg_download(121)
+
+
+```
+
+
+
+
+```{r}
+
+north_abby <- as.matrix(north_abby)
+
+
+contains_ss <- str_detect(north_abby, pattern = fixed("ss"))
+
+contains_ss
+
+sum(contains_ss)
+
+north_abby[contains_ss]
+
+```
+
+
+
+Practice word bank :
+murder 
+dark 
+scary
+ghost
+dead
+death
+scream
+blood
+
+
+```{r}
+
+dark <- str_detect(north_abby, pattern = "dark")
+
+sum(dark)
+
+
+# number_dark <- str_count(north_abby, pattern = "dark")
+# 
+# hist(number_dark)
+
+
+
+murder <- str_detect(north_abby, pattern = "murder")
+
+sum(murder)
+
+
+scary <- str_detect(north_abby, pattern = "scary")
+
+sum(scary)
+
+
+ghost <- str_detect(north_abby, pattern = "ghost")
+
+sum(ghost)
+
+
+dead <- str_detect(north_abby, pattern = "dead")
+
+sum(dead)
+
+
+death <- str_detect(north_abby, pattern = "death")
+
+sum(death)
+
+scream <- str_detect(north_abby, pattern = "scream")
+
+sum(scream)
+
+
+blood <- str_detect(north_abby, pattern = "blood")
+
+sum(blood)
+
+
+```
+
+
+
+character presence:
+
+
+```{r}
+
+Catherine <- str_detect(north_abby, pattern = "Catherine")
+
+sum(Catherine)
+
+
+```
+
+
+```{r}
+
+James <- str_detect(north_abby, pattern = "James")
+
+sum(James)
+
+
+```
+
+
+He vs. She
+
+
+```{r}
+
+he <- str_detect(north_abby, pattern = "he")
+
+sum(he)
+
+
+```
+
+
+
+```{r}
+
+she <- str_detect(north_abby, pattern = "she")
+
+sum(she)
+
+
+```
+
+
+There are four female characters and 6 male characters according to wiki <https://en.wikipedia.org/wiki/Northanger_Abbey#Characters>
+
+
+Using str_split
+
+```{r}
+
+
+north_abby1 <- str_split(north_abby, pattern = fixed(" . "), simplify = TRUE)
+
+
+head(north_abby1)
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

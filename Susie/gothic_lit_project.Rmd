@@ -122,7 +122,7 @@ a_book %>%
  
  
  
-### FInding average word length  
+### Finding average word length  
  
  
 ```{r}
@@ -188,20 +188,20 @@ library(tm)
 goth_text <- goth_texts$text
 
 
-# goth_source <- VectorSource(goth_text)
-# 
-# goth_corpus <- VCorpus(goth_source)
-# 
-# goth_corpus
-# 
-# content(goth_corpus[1])
+goth_source <- VectorSource(goth_text)
+
+goth_corpus <- VCorpus(goth_source)
+ 
+goth_corpus
+
+content(goth_corpus[1])
 
 
 library(seqinr)
 library(shiny)
 #read.fasta(NULL, as.string = TRUE)
 
-linn <-readLines(a_book)
+linn <-readLines(a_book) 
 if (is.null(inFile))
     return(NULL)
 for (i in 1:length(linn)){
@@ -215,3 +215,14 @@ close(a_book)
 
 
 Error in readLines(a_book) : 'con' is not a connection
+
+
+
+
+
+
+
+
+
+
+
