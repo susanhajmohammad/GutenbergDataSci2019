@@ -14,6 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(gutenbergr)
 library(stringr)
+library(dplyr)
+
+
 
 ```
 
@@ -29,7 +32,13 @@ north_abby <- gutenberg_download(121)
 
 ```{r}
 
+
+
 north_abby <- as.matrix(north_abby)
+
+
+north_abby$chapter <- str_detect(north_abby, pattern = "chapter")
+
 
 
 contains_ss <- str_detect(north_abby, pattern = fixed("ss"))

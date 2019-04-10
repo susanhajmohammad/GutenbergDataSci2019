@@ -77,7 +77,14 @@ Time:
 Summary:
 
 Used functions from stringr on the Northanger Abby book. 
-Used as.matrix() on the gutenbergr download object in order for these functions to work.  
+Used as.matrix() on the gutenbergr download object in order for these functions to work. \
+
+I think I have Northanger abby split into chapters by using the str_detect function on "chapter" and adding it as a new column in the north_abby matrix.  
+
+Questions: 
+
+When I use the str_split() function to split the text into lines, specifying pattern = " . ", it gives me a weird output.  I specified simplify = TRUE so it would be a matrix.  
+
 
 
 
