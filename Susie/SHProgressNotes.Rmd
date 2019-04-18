@@ -89,3 +89,60 @@ When I use the str_split() function to split the text into lines, specifying pat
 
 
 
+
+
+
+
+# Week 
+
+Goals:
+
+ long term:
+
+group by chapter and count he or she by chpter, or other words
+
+Shrt term
+
+Spooky words
+
+
+step 1
+
+Str_detect, with one line of strdetect try to find the total number of any of those words.  
+be able to pull out the number of any given spooky word. 
+
+step 2
+
+intro to tidyverse or r for data science ch5.  section on grouped summaries.  play around with what can I do if I group by chapter, total number of words or lines. 
+
+
+      work on grouping by chapter, for example number of "he"
+
+
+Play around with the data set. 
+
+
+look at data camp tidy sentiment 
+  built in lexicons, positive and negative
+  word clouds. 
+    which seems spooky.  
+  
+  
+Time: 
+
+
+
+Summary:
+
+I attempted to use lapply to detect many strings at one time in the text.  I tried with both a word bank and with two sample words.  The problem I am running into is that I don't understand where "abby_text" should go into the function I am creating in the lapply function.  
+
+On top of that I tried to get one of the str_detect functions to also group_by chapter and that is also not working for me.  I think it might have something to do with the format of the data.  I remember when we were talking about how I put the data as a matrix initially but this would include the column with the book ID.  Well the problem I am having is that in order to group_by I need the chapter column, however when I include the chapter column the text is no longer in a form that I can use str_detect on it.  I also tried putting the df with text and chapter as a matrix and this also did not work.  I think this is because the data in the chapter column would mix in with the text.  
+
+
+I want to work on doing an "innerjoin" with this text and the "bing" lexicon.  
+
+
+
+
+
+
