@@ -144,5 +144,20 @@ I want to work on doing an "innerjoin" with this text and the "bing" lexicon.
 
 
 
+Goals:
+
+
+
+* rather than doing new stuff, consolidate what I have.  Work to get it more organized.  
+Put into a more smaller doc. 
+
+
+Get abby novel, create abby txt w chapters, create abby words w unnest tokens, group by chapter and summarize.
+
+Do as many variables num_he, num_dark
+
+
+
+
 
 

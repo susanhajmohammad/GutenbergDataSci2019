@@ -1,0 +1,142 @@
+---
+title: "Consolidated"
+author: "Susan Hajmohammad"
+date: "April 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+
+library(gutenbergr)
+library(stringr)
+library(dplyr)
+library(tidyverse)
+library(tidytext)
+
+```
+
+
+Download Northanger Abby from Gutenberger Package:
+
+
+
+```{r}
+
+north_abby <- gutenberg_download(121)
+
+
+
+```
+
+
+
+Split up by chapter using a for loop:
+
+```{r}
+
+num_lines <- nrow(north_abby)
+
+for (i in 1:num_lines) {
+  
+  north_abby$chapter[i] <- sum(str_detect(north_abby$text[1:i], pattern = fixed("CHAPTER"))) 
+  
+  
+}
+
+
+
+
+```
+
+Apply fuction on word bank: 
+
+```{r}
+
+word_bank <- c("murder", "dark", "scary", "ghost", "dead", "death", "scream", "blood", "frightened")
+
+
+count_string <- function(x){
+  sum(str_detect(abby_text$text, x))
+  
+}
+
+
+sapply(word_bank, count_string)
+
+
+
+
+```
+
+Words by chapter: 
+
+
+```{r}
+
+library(tidyverse)
+
+by_chap <- abby_text %>%
+  group_by(chapter) %>%
+  summarise(num_he = sum(str_detect(text, pattern = fixed(" he ", ignore_case = TRUE))))
+  
+
+by_chap
+
+
+murder_chap <- abby_text %>%
+  group_by(chapter) %>%
+  summarise(num_he = sum(str_detect(text, pattern = fixed(" murder ", ignore_case = TRUE))))
+
+
+murder_chap
+
+
+dark_chap <- abby_text %>%
+  group_by(chapter) %>%
+  summarise(num_he = sum(str_detect(text, pattern = fixed(" dark ", ignore_case = TRUE))))
+
+
+dark_chap
+
+
+```
+
+
+
+Splitting novel up by words: 
+
+
+```{r}
+
+
+library(tidytext)
+
+
+abby_words <- abby_text%>%
+  unnest_tokens(word, text)
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,51 @@
+---
+title: "4.24.19"
+author: "Susan Hajmohammad"
+date: "April 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+library(gutenbergr)
+library(stringr)
+library(dplyr)
+library(tidyverse)
+library(tidytext)
+
+
+```
+
+
+Download Northanger Abby from Gutenberger Package:
+
+
+```{r}
+
+north_abby <- gutenberg_download(121)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
