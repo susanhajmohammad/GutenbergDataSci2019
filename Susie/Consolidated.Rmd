@@ -34,6 +34,17 @@ north_abby <- gutenberg_download(121)
 ```
 
 
+```{r}
+
+
+
+#north_abby <- as.matrix(north_abby)
+
+
+abby_text <- north_abby %>%
+  select(text, chapter)
+
+```
 
 Split up by chapter using a for loop:
 
