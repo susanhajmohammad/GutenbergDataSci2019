@@ -34,17 +34,6 @@ north_abby <- gutenberg_download(121)
 ```
 
 
-```{r}
-
-
-
-#north_abby <- as.matrix(north_abby)
-
-
-abby_text <- north_abby %>%
-  select(text, chapter)
-
-```
 
 Split up by chapter using a for loop:
 
@@ -63,6 +52,22 @@ for (i in 1:num_lines) {
 
 
 ```
+
+Select Chapter and Text:
+
+```{r}
+
+
+
+#north_abby <- as.matrix(north_abby)
+
+
+abby_text <- north_abby %>%
+  select(text, chapter)
+
+```
+
+
 
 Apply fuction on word bank: 
 
