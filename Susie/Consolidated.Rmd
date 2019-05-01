@@ -16,6 +16,7 @@ library(tidytext)
 library(mosaic)
 library(wordcloud)
 library(RColorBrewer)
+library(tm)
 
 ```
 
