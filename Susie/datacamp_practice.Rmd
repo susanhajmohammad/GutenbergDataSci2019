@@ -28,23 +28,9 @@ north_abby <- gutenberg_download(121)
 ```
 
 
-
-
-```{r}
-
-
-
-#north_abby <- as.matrix(north_abby)
-
-
-abby_text <- north_abby %>%
-  select(text, chapter)
-
-```
-
 Split up by chapter:
 
-use a for loop:
+Use a for loop:
 
 ```{r}
 
@@ -61,6 +47,21 @@ for (i in 1:num_lines) {
 
 
 ```
+
+```{r}
+
+
+
+#north_abby <- as.matrix(north_abby)
+
+
+abby_text <- north_abby %>%
+  select(text, chapter)
+
+```
+
+
+
 
 
 
@@ -354,6 +355,154 @@ abby_words <- abby_text%>%
   unnest_tokens(word, text)
 
 
+```
+
+
+Practice visualizing the word frequencies:
+
+
+
+```{r}
+
+# library(tm)
+# #convert north_abby to a matrix
+# 
+# 
+# abby_source <- VectorSource(north_abby$text)
+# 
+# abby_tdm <- TermDocumentMatrix(abby_words)
+# 
+# #check tdm help file google
+# 
+# abby_m <- as.matrix(abby_words)
+# 
+# 
+# #sum rows and sort by frquency
+# 
+# term_frequency <- rowSums(abby_m)
+# term_frequency <- sort(term_frequency, decreasing = TRUE)
+# 
+# 
+# #Create a bar plot
+# 
+# barplot(term_frequency[1:10], col = "tan", las = 2)
+
+
+
+
+
+```
+
+
+
+
+
+
+```{r}
+
+
+library(qdap)
+
+
+
+```
+
+
+Making a word cloud:
+
+
+1. put txt file as a corpus
+
+```{r}
+
+abby_t <- north_abby$text
+
+```
+
+
+```{r}
+library(tm)
+
+abby_corp <- Corpus(VectorSource(abby_t))
+  
+  
+```
+
+
+
+To remove common english stop words: 
+
+
+
+```{r}
+
+
+abby_corp <- tm_map(abby_corp, removeWords, stopwords("english"))
+
+
+
+```
+
+
+
+
+
+Build a term - document matrix:
+
+```{r}
+
+tdm <- TermDocumentMatrix(abby_corp)
+
+abby_m <- as.matrix(tdm)
+
+
+
+```
+
+
+sum the rows and sort by frequency:
+
+
+```{r}
+
+abby_v <- sort(rowSums(abby_m), decreasing = TRUE)
+
+abby_df <- data.frame(word = names(abby_v), freq = abby_v)
+
+
+head(abby_df)
+
+```
+
+
+Generate a word cloud:
+
+words	= the words
+
+freq = their frequencies
+
+min.freq = words with frequency below min.freq will not be plotted
+
+max.words	= Maximum number of words to be plotted. least frequent terms dropped
+
+random.order = plot words in random order. If false, they will be plotted in decreasing frequency
+
+rot.per	= proportion words with 90 degree rotation
+
+colors = color words from least to most frequent
+
+
+```{r}
+
+
+library("wordcloud")
+library("RColorBrewer")
+
+
+set.seed(1234)
+
+wordcloud(words = abby_df$word, freq = abby_df$freq, min.freq = 1, max.words = 100, random.order = FALSE, rot.per = 0.35, colors = brewer.pal(8, "RdYlGn"))
+
 
 
 
@@ -366,10 +515,16 @@ abby_words <- abby_text%>%
 
 
 
+word cloud:
+
+<http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-know>
 
 
+color options: 
 
+<https://www.rdocumentation.org/packages/RColorBrewer/versions/1.1-2/topics/RColorBrewer>
 
+display.brewer.all()
 
 
 

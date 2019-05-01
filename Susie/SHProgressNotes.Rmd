@@ -159,5 +159,18 @@ Do as many variables num_he, num_dark
 
 
 
+Goals:
+
+
+x put packages in set up, because include = false.
+
+x abby_words earlier on to count many words in a line.  
+
+
+- play around with ways to visualize the words by chapter, diff types of graphs, 
+- Make a word cloud overall by book or by chapter, 
+- Look up datacamp on how to make word cloud
+
+
 
 
