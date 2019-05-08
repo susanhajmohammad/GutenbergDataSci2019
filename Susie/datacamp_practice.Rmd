@@ -511,6 +511,20 @@ wordcloud(words = abby_df$word, freq = abby_df$freq, min.freq = 1, max.words = 1
 
 
 
+Per line
+
+```{r}
+
+
+by_chap <- abby_text %>%
+  group_by(chapter) %>%
+  summarise(num_he_him = sum(str_detect(text, pattern = fixed(" he ", ignore_case = TRUE)) | 
+                               str_detect(text, pattern = fixed(" him ", ignore_case = TRUE))| 
+                               str_detect(text, pattern = fixed(" his ", ignore_case = TRUE))))
+
+
+```
+
 
 
 
@@ -527,5 +541,7 @@ color options:
 display.brewer.all()
 
 
+two graphs in one:
 
+<https://stackoverflow.com/questions/2564258/plot-two-graphs-in-same-plot-in-r>
 

@@ -125,15 +125,71 @@ dark_chap
 
 ```
 
+# Male Pronouns : he, him, his
+str_detect("he", regex("^he$"))
 
-
+Don't do this for all of them only for the ones that are he, she etc. 
 
 
 ```{r}
 
-word_by_chap <- abby_text %>%
+#head(abby_words)
+
+male_by_chap <- abby_words %>%
   group_by(chapter) %>%
-  summarise(num_he = sum(str_detect(text, pattern = fixed(" he ", ignore_case = TRUE))), num_murder = sum(str_detect(text, pattern = fixed(" murder", ignore_case = TRUE))), num_dark = sum(str_detect(text, pattern = fixed(" dark", ignore_case = TRUE))))
+  summarise(num_he = sum(str_detect(word, pattern = regex("^he$", ignore_case = TRUE))), 
+            num_his = sum(str_detect(word, pattern = regex("^his$", ignore_case = TRUE))),
+            num_him = sum(str_detect(word, pattern = regex("^him$", ignore_case = TRUE))))
+
+```
+
+
+Cumulative male pronouns by chapter: 
+
+
+```{r}
+
+male_by_chap1 <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_male = sum(str_detect(word, pattern = regex("^he$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^his$", ignore_case = TRUE)))
+            + sum(str_detect(word, pattern = regex("^him$", ignore_case = TRUE))))
+
+sum(male_by_chap)
+
+
+
+
+```
+
+
+```{r}
+
+#library(mosaic)
+
+gf_smooth(num_male ~ chapter, data = male_by_chap1) + geom_line()
+
+gf_smooth(num_him ~ chapter, data = male_by_chap) + geom_line()
+
+```
+
+ 
+# Female Pronouns : she, her, hers
+
+
+Cumulative female pronouns by chapter: 
+
+
+```{r}
+
+female_by_chap1 <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_female = sum(str_detect(word, pattern = regex("^she$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^her$", ignore_case = TRUE)))
+            + sum(str_detect(word, pattern = regex("^hers$", ignore_case = TRUE))))
+
+sum(female_by_chap1)
+
 
 
 
@@ -145,27 +201,40 @@ word_by_chap <- abby_text %>%
 #library(mosaic)
 
 
-gf_smooth(num_he ~ chapter, data = word_by_chap) + geom_line()
+gf_smooth(num_female ~ chapter, data = female_by_chap1) + geom_line()
 
 
 ```
 
 
+Visualization of both gender pronouns: 
 
 ```{r}
 
 
-by_chap <- abby_text %>%
-  group_by(chapter) %>%
-  summarise(num_he_him = sum(str_detect(text, pattern = fixed(" he ", ignore_case = TRUE)) | str_detect(text, pattern = fixed(" him ", ignore_case = TRUE))))
+female_by_chap2 <- female_by_chap1%>%
+  select(num_female)
 
+gender_by_chap <- cbind(female_by_chap2, male_by_chap1)
+
+
+
+
+require(ggplot2)
+
+ggplot(gender_by_chap, aes(x = chapter)) +                    
+  geom_line(aes(y= num_female), colour="red") + 
+  geom_line(aes(y= num_male), colour="green")  
 
 ```
+
+
+
 
 Word cloud of most frequent words:
 
 
-```{r}
+```{r, warning=FALSE}
 
 abby_t <- north_abby$text
 
@@ -204,5 +273,238 @@ wordcloud(words = abby_df$word, freq = abby_df$freq, min.freq = 1, max.words = 1
 
 
 ```
+
+
+
+
+Main Characters in Northanger abby <https://www.sparknotes.com/lit/northangerabbey/characters/>
+
+
+Catherine Morland: Catherine
+
+```{r}
+
+
+cath_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_cath = sum(str_detect(word, pattern = regex("^catherine$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^catherine's$", ignore_case = TRUE))))
+
+sum(cath_by_chap)
+
+
+
+
+```
+
+
+
+Henry Tilney: Henry
+
+
+```{r}
+
+
+hen_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_hen = sum(str_detect(word, pattern = regex("^henry$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^henry's$", ignore_case = TRUE))))
+
+sum(hen_by_chap)
+
+
+
+
+```
+
+
+Eleanor Tilney: Eleanor
+
+
+```{r}
+
+
+el_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_el = sum(str_detect(word, pattern = regex("^eleanor$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^eleanor's$", ignore_case = TRUE))))
+
+sum(el_by_chap)
+
+
+```
+
+
+
+General Tilney: General
+
+
+```{r}
+
+
+gen_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_gen = sum(str_detect(word, pattern = regex("^general$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^general's$", ignore_case = TRUE))))
+
+sum(gen_by_chap)
+
+
+```
+
+
+Isabella Thorpe: Isabella
+
+
+```{r}
+
+
+isa_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_isa = sum(str_detect(word, pattern = regex("^isabella$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^isabella's$", ignore_case = TRUE))))
+
+sum(isa_by_chap)
+
+
+```
+
+
+John Thorpe: John
+
+```{r}
+
+john_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_john = sum(str_detect(word, pattern = regex("^john$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^john's$", ignore_case = TRUE))))
+
+sum(john_by_chap)
+
+
+
+
+
+```
+
+
+James Morland: James
+
+
+```{r}
+
+jam_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_jam = sum(str_detect(word, pattern = regex("^james$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^james's$", ignore_case = TRUE))))
+
+sum(jam_by_chap)
+
+
+
+
+
+```
+
+
+Frederick Tilney: Frederick, Captain Tilney
+
+
+```{r}
+
+fred_by_chap <- abby_words %>%
+  group_by(chapter) %>%
+  summarise(num_fred = sum(str_detect(word, pattern = regex("^frederick$", ignore_case = TRUE))) 
+            + sum(str_detect(word, pattern = regex("^frederick's$", ignore_case = TRUE)))  
+            + sum(str_detect(word, pattern = regex("^captain$", ignore_case = TRUE)))
+             + sum(str_detect(word, pattern = regex("^captain's$", ignore_case = TRUE))))
+
+sum(fred_by_chap)
+
+
+
+
+
+```
+
+
+
+These characters are harder because they have to words that are necessary to identify the character.  
+
+
+Mrs. Thorpe: Mrs. Thorpe
+
+
+Mr. And Mrs. Allen: Mr. Allen, Mrs. Allen
+
+
+Mr. And Mrs. Morland And Family: Mrs. Morland, Mr. Morland, family
+
+
+
+
+# Catherine and other female characters: 
+
+
+
+```{r}
+
+
+isa_by_chap1 <- isa_by_chap%>%
+  select(num_isa)
+
+el_by_chap1 <- el_by_chap%>%
+  select(num_el)
+
+cath_fem <- cbind(cath_by_chap, isa_by_chap1, el_by_chap1)
+
+require(ggplot2)
+
+ggplot(cath_fem, aes(x = chapter)) +                    
+  geom_line(aes(y= num_cath), colour="red") + 
+  geom_line(aes(y= num_isa), colour="green") +
+  geom_line(aes(y= num_el), colour="blue")
+
+```
+
+
+
+# Catherine and other male characters: 
+
+
+
+```{r}
+hen_by_chap1 <- hen_by_chap%>%
+  select(num_hen)
+
+fred_by_chap1 <- fred_by_chap%>%
+  select(num_fred)
+
+
+jam_by_chap1 <- jam_by_chap%>%
+  select(num_jam)
+
+
+john_by_chap1 <- john_by_chap%>%
+  select(num_john)
+
+gen_by_chap1 <- gen_by_chap%>%
+  select(num_gen)
+
+cath_male <- cbind(cath_by_chap, hen_by_chap1, fred_by_chap1, jam_by_chap1, john_by_chap1, gen_by_chap1)
+
+require(ggplot2)
+
+ggplot(cath_male, aes(x = chapter)) +                    
+  geom_line(aes(y= num_cath), colour="red") + 
+  geom_line(aes(y= num_hen), colour="green") +
+  geom_line(aes(y= num_fred), colour="blue") +
+  geom_line(aes(y= num_jam), colour="yellow") +
+  geom_line(aes(y= num_john), colour="orange") +
+  geom_line(aes(y= num_gen), colour="purple")
+
+```
+
+
 
 

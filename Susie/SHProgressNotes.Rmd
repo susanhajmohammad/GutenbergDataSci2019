@@ -173,4 +173,89 @@ x abby_words earlier on to count many words in a line.
 
 
 
+Goals
+
+
+
+
+
+Notes: 
+
+
+remove punctuation out of northanger abby txt file before wordcloud is made. 
+
+Try to make num_he_him more concise, try using he and him in a vector.  
+
+
+Looking at words by chap, looking at which words to look at.
+
+
+Tracking characters and gender through the novel: 
+
+Look at sparknotes and get a character list.  
+
+Pick whoever the main characters are: catherine, etc. 
+
+  Find different combos of those names: x, ms.x, Xfirst Xlast. 
+  Use abby_text not abby word.  
+
+
+Gender:
+
+All counts of he/him by chap
+All counts of she/her by chap
+
+
+Once I get the data I can play with different graphs to visualize it. 
+
+Possiblility:
+
+Have two lines (he and she) on the same graph.  
+
+
+OTHER DIRECTION: 
+
+Go and look up the most common positive words and most common negative words in the book.  
+
+Look for those more in detail, or even just a sentiment score by chapter.  
+
+
+Look in jane austen tidy text 
+  graphed sentiments for diff books,
+  
+  just reproduce it just for northanger abby.
+  
+  
+End goals:
+
+Primary duty:
+get something done tracing the gender throughout the novel.
+be creative, gender or characters. 
+make a graph or two.
+
+If it gets done before wed work on sentiment stuff.  
+
+Final meeting next wednesday. 
+
+  
+  
+  two graphs on one graph,
+   
+   modify dataset slightly
+   
+   gather and spread command
+   
+   put into long form to where its a column that says he or she and what chapter it is in.  
+
+
+
+
+
+
+
+
+
+
+
+
 
