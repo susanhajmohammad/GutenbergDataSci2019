@@ -29,6 +29,7 @@ north_abby <- gutenberg_download(121)
 
 ```
 
+First, I used the gutenberg_download() function to download the Northanger abby text from http://www.gutenberg.org. 
 
 
 Split up by chapter using a for loop:
@@ -58,6 +59,14 @@ abby_text <- north_abby %>%
 ```
 
 
+Then I created another column called "chapter".  I used a for loop to count the number of "chapter"s written in the text. For every chapter word detected it counts as a TRUE and the chapter column is the sum of trues, therefore giving me the number of chapters.    
+
+
+
+In order to str_detect() most accurately I had to break the text into words instead of observations. Using the unnest_tokens function I created a column "word" from the column "text" which used to be lines of text.   
+
+
+
 Splitting novel up by words: 
 
 
@@ -70,6 +79,11 @@ abby_words <- abby_text%>%
 
 ```
 
+
+
+
+
+In order to explore gothic words throughout the book, I first created a small word bank of words I thought represented a gothic theme.  By creating a function that uses sum() and str_detect() I was able to have an output that shows each word in the word back and gives the sum of how many times they are said in the book.  
 
 
 Apply fuction on word bank: 
@@ -91,6 +105,13 @@ sapply(word_bank, count_string)
 
 
 ```
+
+
+
+By grouping the data set "abby_words" by chapter I was able to see the sum of a detected word by chapter. 
+
+
+
 
 Words by chapter: 
 
@@ -125,15 +146,22 @@ dark_chap
 
 ```
 
-# Male Pronouns : he, him, his
-str_detect("he", regex("^he$"))
 
-Don't do this for all of them only for the ones that are he, she etc. 
+
+
+# Male Pronouns : he, him, his
+
 
 
 ```{r}
 
 #head(abby_words)
+
+# str_detect("he", regex("^he$"))
+# 
+# Don't do this for all of them only for the ones that are he, she etc. 
+
+
 
 male_by_chap <- abby_words %>%
   group_by(chapter) %>%
@@ -142,6 +170,10 @@ male_by_chap <- abby_words %>%
             num_him = sum(str_detect(word, pattern = regex("^him$", ignore_case = TRUE))))
 
 ```
+
+
+
+I wanted to explore how much each gender was referenced throughout the book.  So, it was useful to be able to add the sums of detected words into one data frame.  This game me a cumulitive amount of how much certain words were referenced by chapter throughout the book. 
 
 
 Cumulative male pronouns by chapter: 
@@ -162,6 +194,8 @@ sum(male_by_chap)
 
 ```
 
+I created a visualtion of the data set that included the culumative number of male pronouns by chapter. Gf_smooth() shows a more general trend of the amounts of male pronouns per chapter.  
+
 
 ```{r}
 
@@ -173,6 +207,12 @@ gf_smooth(num_him ~ chapter, data = male_by_chap) + geom_line()
 
 ```
 
+THe trend of male pronouns fluctuates rapidly throughout the book.  There are large spikes from chapter 10 and on.  
+ 
+ 
+ 
+I used the same functions to find the trend of female pronouns throughout the book.  
+ 
  
 # Female Pronouns : she, her, hers
 
@@ -195,6 +235,7 @@ sum(female_by_chap1)
 
 ```
 
+There are a lot more female pronouns referenced throughout the book.  THe max is about 160 in one chapter, while for male pronouns seemed to max out at about 25 in one chapter.  
 
 ```{r}
 
@@ -205,6 +246,12 @@ gf_smooth(num_female ~ chapter, data = female_by_chap1) + geom_line()
 
 
 ```
+
+
+
+
+
+To look at both of these graphs in one visual, I combined the graphs by adding each line.  I separated them by color.  The red line represents female pronouns and the green line represents male pronouns.  
 
 
 Visualization of both gender pronouns: 
@@ -228,7 +275,11 @@ ggplot(gender_by_chap, aes(x = chapter)) +
 
 ```
 
+The spikes of each line seem to mimic each other, meaning the amount of pronouns in each chapter seem to fluctuate similarly. 
 
+
+
+I created a word cloud to explore with words were most frequently said throughout the entire book.  
 
 
 Word cloud of most frequent words:
@@ -274,8 +325,10 @@ wordcloud(words = abby_df$word, freq = abby_df$freq, min.freq = 1, max.words = 1
 
 ```
 
+This word cloud has both a size and color scale.  The larger the word the more frequently it was said.  Green words were said most frequently while red words were written least frequently.  I used an already made wordbank of "stopwords" "stopwords("english")"; however, this word bank apparently didn't include a very common stop word "the".  
 
 
+I looked up the main characters in Northanger abby on Spark Notes. This website also told me other names that characters were called. I found the amount of times each of the most popular characters were referenced per chapter.  There were certain characters I avoided using in this because their names were two words and the data set I created only has one word per observation.  
 
 Main Characters in Northanger abby <https://www.sparknotes.com/lit/northangerabbey/characters/>
 
@@ -442,6 +495,13 @@ Mr. And Mrs. Morland And Family: Mrs. Morland, Mr. Morland, family
 
 
 
+The numbers of how much a character was referenced are not entirely accurate.  This is because a character could be referenced more formally like Miss Thorpe instead of isabella. 
+
+
+
+It would be too much to have data from all the characters represented on one graph.  So I decided to create two graphs: One with Catherine and female characters and the other was Catherine compared to male characters. 
+
+
 
 # Catherine and other female characters: 
 
@@ -467,7 +527,7 @@ ggplot(cath_fem, aes(x = chapter)) +
 
 ```
 
-
+Catherine is referenced more generally per chapter, except for some instances like in chapter about 18-19 isabella seems to make more of an appearance, and in the later chapters elanor seems to come in as a very contributing character. 
 
 # Catherine and other male characters: 
 
@@ -506,5 +566,5 @@ ggplot(cath_male, aes(x = chapter)) +
 ```
 
 
-
+Again, Catherine is referenced more than other characters.  Of the male characters, General and Henry seem to be the more main male characters.  
 
